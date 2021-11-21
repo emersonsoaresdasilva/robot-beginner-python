@@ -10,4 +10,5 @@ Nova sessão
     Open Browser                    ${url}                      edge
 
 Encerra sessão
+    Capture Page Screenshot
     Close Browser
