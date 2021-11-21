@@ -1,0 +1,11 @@
+# Python
+venv
+__pycache__
+
+# Robot Framework
+log.html
+output.xml
+report.html
+
+# Edge Drivr
+msedgedriver.exe
