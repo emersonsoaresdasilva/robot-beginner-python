@@ -7,29 +7,40 @@ Test Teardown   Encerra sessão
 
 *** Test Cases ***
 Login com sucesso
-    Go To                   ${url}/login
-    Input Text              css:input[name=username]        stark
-    Input Text              css:input[name=password]        jarvis!
-    Click Element           class:btn-login
+    [tags]                          login_sucess
+    Go To                           ${url}/login
+    Login With                      stark           jarvis!
     # Verifica se estou logado
-    Page Should Contain     Olá, Tony Stark. Você acessou a área logada!
-
+    Should See Logged User          Tony Stark
+    
 Senha incorreta
-    [tags]                  login_error
-    Go To                   ${url}/login
-    Input Text              css:input[name=username]        stark
-    Input Text              css:input[name=password]        jarvis
-    Click Element           class:btn-login
-    # Verifica se estou logado
-    ${message}=             Get WebElement       id:flash
-    Should Contain          ${message.text}      Senha é invalida!
+    [tags]                          login_error
+    Go To                           ${url}/login
+    Login With                      stark           jarvis
+
+    Should Contain Login Alert      Senha é invalida!
 
 Usuário não existe
-    [tags]                  login_user404
-    Go To                   ${url}/login
-    Input Text              css:input[name=username]        emerson
-    Input Text              css:input[name=password]        123456
-    Click Element           class:btn-login
-    # Verifica se estou logado
-    ${message}=             Get WebElement      id:flash
-    Should Contain          ${message.text}     O usuário informado não está cadastrado!
+    [tags]                          login_user404
+    Go To                           ${url}/login
+    Login With                      emerson         123456
+
+    Should Contain Login Alert      O usuário informado não está cadastrado!
+
+*** Keywords ***
+Login With
+    [Arguments]     ${user}     ${pass}
+
+    Input Text      css:input[name=username]        ${user} 
+    Input Text      css:input[name=password]        ${pass}
+    Click Element   class:btn-login
+
+Should Contain Login Alert
+    [Arguments]     ${expect_message}
+
+    ${message}=     Get WebElement      id:flash
+    Should Contain  ${message.text}     ${expect_message}
+
+Should See Logged User
+    [Arguments]             ${full_name}
+    Page Should Contain     Olá, ${full_name}. Você acessou a área logada!
