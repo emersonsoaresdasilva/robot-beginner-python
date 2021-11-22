@@ -9,3 +9,6 @@ report.html
 
 # Edge Drivr
 msedgedriver.exe
+
+# Screenshots
+*.png
